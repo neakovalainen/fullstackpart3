@@ -70,6 +70,38 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(204).end()
 })
 
+app.post('/api/persons', (request, response) => {
+    const newId = () => {
+        const rndm = Math.round(Math.random() * 2000)
+        return String(rndm)
+    } 
+    const body = request.body
+
+    if (!body.name) {
+        return response.status(400).json({
+            error: 'oh noo!! name is missing...'
+        })
+    }
+    if (!body.number) {
+        return response.status(400).json({
+            error: 'you forgot the number right?'
+        })
+    }
+    if (persons.find((person) => person.name === body.name)) {
+        return response.status(400).json({
+            error: 'the person is already there u dum dum'
+        })
+    }
+    const person = {
+        id: `${newId()}`,
+        name: body.name,
+        number: body.number || false,
+    }
+
+    persons = persons.concat(person)
+    response.json(request.body)
+})
+
 const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)

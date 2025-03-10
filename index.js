@@ -30,6 +30,18 @@ app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
 
+app.get('/api/info', (request, response) => {
+    response.send(`Phonebook has info for ${peopleAmount()} people <br> yay ${Date()}`) // \r\n to have space
+}) 
+
+const peopleAmount = () => {
+    const biggestId = persons.length > 0 
+        ? Math.max(...persons.map(person => Number(person.id)))
+        : 0
+    return String(biggestId)
+
+}
+
 app.get('/api/persons/:id', (request, response) => {
     const id = request.params.id
     const person = persons.find(person => person.id === id)

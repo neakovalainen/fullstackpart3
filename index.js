@@ -3,7 +3,10 @@ const app = express()
 const morgan = require('morgan')
 
 app.use(express.json())
-app.use(morgan('tiny'))
+
+morgan.token('body', (req, res) => JSON.stringify(req.body)) 
+//has to be body, because it's returned by app.post and it's a predefined in express!!
+app.use(morgan(':method :url :status :res[content-length] :response-time ms :body'))
 
 let persons = [
     {
@@ -101,8 +104,10 @@ app.post('/api/persons', (request, response) => {
     }
 
     persons = persons.concat(person)
+    console.log(request.body, body)
     response.json(request.body)
 })
+
 
 const PORT = 3001
 app.listen(PORT, () => {

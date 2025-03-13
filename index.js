@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
 
 app.use(express.json())
+app.use(morgan('tiny'))
 
 let persons = [
     {
@@ -42,7 +44,7 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.get('/api/info', (request, response) => {
-    response.send(`Phonebook has info for ${peopleAmount()} people <br> yay ${Date()}`) // \r\n to have space
+    response.send(`Phonebook has info for ${peopleAmount()} people <br> yay ${Date()}`)
 }) 
 
 const peopleAmount = () => {

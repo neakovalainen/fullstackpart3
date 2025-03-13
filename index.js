@@ -3,6 +3,7 @@ const app = express()
 const morgan = require('morgan')
 
 app.use(express.json())
+app.use(express.static('dist'))
 
 morgan.token('body', (req, res) => JSON.stringify(req.body)) 
 //has to be body, because it's returned by app.post and it's a predefined in express!!
@@ -109,7 +110,7 @@ app.post('/api/persons', (request, response) => {
 })
 
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })

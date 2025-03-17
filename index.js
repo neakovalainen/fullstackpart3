@@ -54,16 +54,20 @@ app.get('/api/persons/:id', (request, response) => {
   })
 
 app.delete('/api/persons/:id', (request, response) => {
-    persons = persons.filter(person => person.id !== request.params.id)
-
-    response.status(204).end()
+    console.log(request.params)
+    Person.findByIdAndDelete(request.params.id)
+        .then(result => {
+            console.log(request.params.id, "id?")
+            response.status(204).end()
+        })
+        .catch(error => {
+            console.log(request.params.id, "id?")
+            /* console.log(error) */
+            response.status(400).send({ error: "malformatted id"})
+        })
 })
 
 app.post('/api/persons', (request, response) => {
-    const newId = () => {
-        const rndm = Math.round(Math.random() * 2000)
-        return String(rndm)
-    } 
     const body = request.body
 
     if (!body.name) {
@@ -82,7 +86,6 @@ app.post('/api/persons', (request, response) => {
         })
     }
     const person = new Person({
-        id: `${newId()}`,
         name: body.name,
         number: body.number || false,
     })

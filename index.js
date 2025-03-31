@@ -17,8 +17,8 @@ app.get('/api/persons', (request, response, next) => {
     Person.find({})
         .then(persons => {
             response.json(persons)
+        })
         .catch(error => next(error))
-    })
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -85,10 +85,10 @@ app.post('/api/persons', (request, response) => {
     person.save()
         .then(savedPerson => {
             response.json(savedPerson)
+        })
         .catch(error => {
             next(error)
         })
-    })
 })
 
 const errorHandler = (error, request, response, next) => {

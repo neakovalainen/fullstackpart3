@@ -44,7 +44,7 @@ const peopleAmount = () => {
     return String(biggestId)
 
 }
-
+// hoitaa tyypin poistamisen tietokannasta
 app.delete('/api/persons/:id', (request, response) => {
     console.log(request.params)
     Person.findByIdAndDelete(request.params.id)
@@ -59,6 +59,7 @@ app.delete('/api/persons/:id', (request, response) => {
         })
 })
 
+// hoitaa uuden tyypin lisäämisen tietokantaan
 app.post('/api/persons', (request, response) => {
     const body = request.body
 
@@ -77,6 +78,7 @@ app.post('/api/persons', (request, response) => {
             error: 'the person is already there u dum dum'
         })
     }
+    //uusi ihminen (model, parametrien perusteella luotu js olio)
     const person = new Person({
         name: body.name,
         number: body.number || false,
@@ -91,6 +93,25 @@ app.post('/api/persons', (request, response) => {
         })
 })
 
+app.put('/api/persons/:id', (request, response) => {
+    const body = request.body
+    Person.updateOne({
+        name: body.name},
+        {$set: {
+            number: body.number
+        }
+
+    })
+    .then(result => {
+        (console.log("changed?", request.body))
+        response.json(result)
+    })
+    .catch(error => {
+        next(error)
+    })
+
+
+})
 const errorHandler = (error, request, response, next) => {
     console.log(error.message)
     console.log(error.name)

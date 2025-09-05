@@ -45,7 +45,7 @@ const peopleAmount = () => {
 
 }
 // hoitaa tyypin poistamisen tietokannasta
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
     console.log(request.params)
     Person.findByIdAndDelete(request.params.id)
         .then(result => {
@@ -60,7 +60,7 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 // hoitaa uuden tyypin lisäämisen tietokantaan
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     const body = request.body
 
     if (!body.name) {
@@ -93,7 +93,7 @@ app.post('/api/persons', (request, response) => {
         })
 })
 
-app.put('/api/persons/:id', (request, response) => {
+app.put('/api/persons/:id', (request, response, next) => {
     const body = request.body
     Person.updateOne({
         name: body.name},
@@ -125,6 +125,7 @@ const errorHandler = (error, request, response, next) => {
 }
 
 app.use(errorHandler)
+
 const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)

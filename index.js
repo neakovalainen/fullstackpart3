@@ -11,8 +11,6 @@ morgan.token('body', (req, res) => JSON.stringify(req.body))
 //has to be body, because it's returned by app.post and it's a predefined in express!!
 app.use(morgan(':method :url :status :res[content-length] :response-time ms :body'))
 
-let persons = []
-
 app.get('/api/persons', (request, response, next) => {
     Person.find({})
         .then(persons => {
@@ -34,16 +32,16 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 app.get('/api/info', (request, response) => {
-    response.send(`Phonebook has info for ${peopleAmount()} people <br> yay ${Date()}`)
+    Person.find({}).then(people => {
+        response.send(
+            `<p>
+                Phonebook has info for ${people.length} people
+                <br>
+                and the date is ${Date()}
+            </p>`)
+    })
 }) 
 
-const peopleAmount = () => {
-    const biggestId = persons.length > 0 
-        ? Math.max(...persons.map(person => Number(person.id)))
-        : 0
-    return String(biggestId)
-
-}
 // hoitaa tyypin poistamisen tietokannasta
 app.delete('/api/persons/:id', (request, response, next) => {
     console.log(request.params)

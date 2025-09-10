@@ -7,7 +7,7 @@ const url = process.env.MONGODB_URI
 
 console.log('connecting to', url)
 mongoose.connect(url)
-  .then(result => {
+  .then(() => {
     console.log('connected to MongoDB')
   })
   .catch((error) => {
@@ -17,7 +17,7 @@ mongoose.connect(url)
 const validator = (val) => {
   let lines = 0
   for (let i = 0; i < val.length; i++)
-    if (val[i] === "-") {
+    if (val[i] === '-') {
       lines += 1
     }
   return lines === 1 && (val[2] === '-' || val[3] === '-')
@@ -31,9 +31,9 @@ const personSchema = new mongoose.Schema({
     required: true
   },
   number: {
-  type: String,
-  minlength: 8,
-  validate: custom
+    type: String,
+    minlength: 8,
+    validate: custom
   }
 })
 
